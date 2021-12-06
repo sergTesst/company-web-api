@@ -14,7 +14,6 @@ function appErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  debugger;
   res.status(err.status || 500);
   res.json({ message: err.message, error: isProduction() ? {} : err.stack });
 }
