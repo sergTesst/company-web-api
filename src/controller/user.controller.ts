@@ -1,7 +1,7 @@
 import { Router, Response, Request, NextFunction } from "express";
 import { UserEntity } from "../database/entities/user.entity";
 import { UserService } from "../services/user.service";
-import { BadRequestError } from "../errors/http/errors";
+import { UserValidator } from "./user.validator";
 
 type paginationParams = Request["query"] & {
   from: number;
@@ -11,33 +11,15 @@ type paginationParams = Request["query"] & {
 export class UserController {
   public router: Router;
   private userService: UserService;
+  private userValidator: UserValidator;
 
   constructor() {
     this.userService = new UserService();
+    this.userValidator = new UserValidator();
     this.router = Router();
 
     this.routes();
   }
-
-  private validateAge = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const user = req["body"] as UserEntity;
-    const minimumAge = 18;
-    if (!("age" in user) || Number(user.age) < minimumAge) {
-      next(
-        new BadRequestError(
-          `use age ( ${
-            user ? user?.age : "unset"
-          } ) is less that minimum allowed age ( ${minimumAge} )`
-        )
-      );
-    } else {
-      next("route");
-    }
-  };
 
   private getNormalizedParams = (req: Request) => {
     const queryParams = req.query as paginationParams;
@@ -83,9 +65,9 @@ export class UserController {
   };
 
   public routes() {
-    this.router.post(`/`, this.validateAge);
-    this.router.put(`/:id`, this.validateAge);
-    this.router.delete(`/:id`, this.validateAge);
+    this.router.post(`/`, this.userValidator.validateAge);
+    this.router.put(`/:id`, this.userValidator.validateAge);
+    this.router.delete(`/:id`, this.userValidator.validateAge);
 
     this.router.get("/", this.listUsers);
     this.router.get("/fullnames", this.listFullNames);
