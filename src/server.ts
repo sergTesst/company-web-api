@@ -33,6 +33,7 @@ class Server {
         winston.format.colorize({ all: true })
       ),
     };
+
     const whenNotDebuggingLogOneLine = Boolean(!process.env.DEBUG);
     if (whenNotDebuggingLogOneLine) {
       loggerOptions.meta = false;

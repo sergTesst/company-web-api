@@ -14,12 +14,14 @@ function appErrorHandler(
   res: Response,
   next: NextFunction
 ) {
+  debugger;
   res.status(err.status || 500);
   res.json({ message: err.message, error: isProduction() ? {} : err.stack });
 }
 
 function isProduction() {
-  return process.env.NODE_ENV === "production";
+  const isProductionRes = Boolean(!process.env.DEBUG);
+  return isProductionRes;
 }
 
 export { notFoundErrorHandler, appErrorHandler };

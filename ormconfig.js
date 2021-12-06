@@ -10,7 +10,7 @@ module.exports = {
   entities: ["build/database/entities/**/*.js"],
   synchronize: false,
   name: "default",
-  logging: true,
+  logging: process.env.DEBUG ? true : false,
   migrations: [`build/${process.env.DB_MIGRATION_DOCKER_FOLDER}/*.js`],
   cli: {
     migrationsDir: `build/${process.env.DB_MIGRATION_DOCKER_FOLDER}`,

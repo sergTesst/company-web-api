@@ -7,7 +7,8 @@
     "migrate-generate-set-name": "npm run build && npx typeorm migration:generate --outputJs -n",
     "migrate-run": "npx typeorm migration:run",
     "pre-start": "npm run build && node --unhandled-rejections=strict ./build/server.js ",
-    "start": "SET DEBUG=* && npm run pre-start "
+    "start-dev": "SET DEBUG=* && npm run pre-start ",
+    "start": "npm run pre-start "
   },
   "keywords": [],
   "author": "serhii",
